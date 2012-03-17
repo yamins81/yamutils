@@ -13,3 +13,15 @@ def combine_queries(a,b):
         else:
             a[k] = b[k]
     return a
+    
+
+def get_most_recent(coll, q, skip=0, limit=0, kwargs=None):
+    if kwargs is None:
+        kwargs = {}
+    C = coll.find(q, **kwargs).sort([("filename", 1), ("uploadDate", -1)]).skip(skip).limit(limit) 
+    F = []
+    for c in C:
+        if len(F) == 0 or c['filename'] != F[-1]['filename']:
+            F.append(c)
+    return F
+
