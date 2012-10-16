@@ -23,6 +23,7 @@ def pearsonr(x, y):
     generalized from scipy.stats.pearsonr
     """
     # x and y should have same length.
+    
     x_shape = x.shape
     if len(x_shape) > 1:
         x = x.reshape((x_shape[0],prod(x_shape[1:])))
@@ -35,10 +36,10 @@ def pearsonr(x, y):
     xm, ym = x-mx, y-my
 
     r_num = n*np.dot(xm.T,ym)
-    r_den = n*np.sqrt(ss(xm)*ss(ym))
+    r_den = n*np.sqrt(np.outer(ss(xm),ss(ym)))
 
     r = (r_num / r_den)
-
+    
     # Presumably, if r > 1, then it is only some small artifact of floating
     # point arithmetic.
     r = np.minimum(r, 1.0)
@@ -50,10 +51,6 @@ def pearsonr(x, y):
     TINY = 1.0e-20
     t = r*np.sqrt(df/((1.0-r+TINY)*(1.0+r+TINY)))
     prob = betai(0.5*df,0.5,df/(df+t*t))
-
-    if len(x_shape) > 1:
-        r = r.reshape(x_shape[1:])
-        prob = prob.reshape(x_shape[1:])
 
     return r,prob
 
