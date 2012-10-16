@@ -32,11 +32,11 @@ def pearsonr(x, y):
     y = np.asarray(y)
     n = len(x)
     mx = x.mean(0)
-    my = y.mean()
+    my = y.mean(0)
     xm, ym = x-mx, y-my
 
     r_num = n*np.dot(xm.T,ym)
-    r_den = n*np.sqrt(np.outer(ss(xm),ss(ym)))
+    r_den = n*np.sqrt(np.outer(ss(xm),ss(ym,0)))
 
     r = (r_num / r_den)
     
