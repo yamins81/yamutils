@@ -23,3 +23,7 @@ def dict_inverse(x):
             else:
                 y[kk] = [k]
     return y
+
+
+def cname(cls):
+    return cls.__class__.__module__ + '.' + cls.__class__.__name__
