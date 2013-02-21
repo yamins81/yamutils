@@ -1,4 +1,7 @@
+import os
+
 import boto
+from .basic import recursive_file_list
 
 def download_s3_bucket(bucket_name, target):
     conn = boto.connect_s3()
@@ -20,3 +23,13 @@ def download_s3_bucket(bucket_name, target):
             if not os.path.exists(pathname):
                 print(n)
                 l.get_contents_to_filename(pathname)
+                
+    
+def upload_s3_bucket(upload_dir, bucket_name):
+    L = recursive_file_list(upload_dir)
+    conn = boto.connect_s3()
+    b = conn.get_bucket(bucket_name)
+    for l in L:
+        k = b.new_key(l)
+        ft = os.path.splitext(l).strip('.')
+        k.set_contents_from_filename(l, headers={'Content-Type' : 'image/%s' % ft})
