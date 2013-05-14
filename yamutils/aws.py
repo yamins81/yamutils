@@ -25,11 +25,16 @@ def download_s3_bucket(bucket_name, target):
                 l.get_contents_to_filename(pathname)
                 
     
-def upload_s3_bucket(upload_dir, bucket_name):
+def upload_s3_bucket(upload_dir, bucket_name, prefix=None):
     L = recursive_file_list(upload_dir)
     conn = boto.connect_s3()
     b = conn.get_bucket(bucket_name)
     for l in L:
-        k = b.new_key(l)
-        ft = os.path.splitext(l).strip('.')
+        if prefix is not None:
+            ln = prefix + '/' + l
+        else:
+            ln = l
+        k = b.new_key(ln)
+        print(l)
+        ft = os.path.splitext(l)[-1].strip('.')
         k.set_contents_from_filename(l, headers={'Content-Type' : 'image/%s' % ft})
