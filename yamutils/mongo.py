@@ -1,6 +1,7 @@
 import copy
 import datetime
 import numpy as np
+import collections
 
 from bson.objectid import ObjectId
 
@@ -46,6 +47,9 @@ def SONify(arg, memo=None):
         rval = int(arg)
     elif isinstance(arg, (list, tuple)):
         rval = type(arg)([SONify(ai, memo) for ai in arg])
+    elif isinstance(arg, collections.OrderedDict)
+        rval = collections.OrderedDict([(SONify(k, memo), SONify(v, memo))
+            for k, v in arg.items()])
     elif isinstance(arg, dict):
         rval = dict([(SONify(k, memo), SONify(v, memo))
             for k, v in arg.items()])
