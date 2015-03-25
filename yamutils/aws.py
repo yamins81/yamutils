@@ -25,7 +25,7 @@ def download_s3_bucket(bucket_name, target, credentials=None):
             dirn = os.path.split(pathname)[0]
             if dirn and not os.path.isdir(dirn):
                 print('making directory %s' % dirn)
-                os.mkdirs(dirn)
+                os.makedirs(dirn)
             if not os.path.exists(pathname):
                 print(n)
                 l.get_contents_to_filename(pathname)
